@@ -11,15 +11,15 @@ const TeamEdit = () => {
   };
   const [team, setTeam] = useState(initialFormState);
   const navigate = useNavigate();
-  const { name } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
-    if (name !== 'add') {
-      fetch(`team/${name}`)
+    if (id !== 'add') {
+      fetch(`team/${id}`)
         .then(response => response.json())
         .then(data => setTeam(data));
     }
-  }, [name, setTeam]);
+  }, [id, setTeam]);
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -29,22 +29,22 @@ const TeamEdit = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    await fetch(`/teams/team${team.teamName ? `/${team.teamName}` : '/add'}`, {
+    await fetch(`/teams/team${team.teamId ? `/${team.teamId}` : '/add'}`, {
      
-      method: (name!=='add') ? 'PUT' : 'POST',
+      method: (team.teamId) ? 'PUT' : 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(team)
     });
-    console.log((name!=='add') ? 'PUT' : 'POST');
-    console.log(`/teams/team${team.teamName ? `/${team.teamName}` : '/add'}`);
+    console.log((id!=='add') ? 'PUT' : 'POST');
+    console.log(`/teams/team${team.teamId ? `/${team.teamId}` : '/add'}`);
     setTeam(initialFormState);
     navigate('/teams');
   }
 
-  const title = <h2>{name!=='add' ? 'Edit team' : 'Add team'}</h2>;
+  const title = <h2>{id!=='add' ? 'Edit team' : 'Add team'}</h2>;
 
   return (<div>
       <AppNavbar/>

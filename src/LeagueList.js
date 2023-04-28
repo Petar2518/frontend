@@ -51,6 +51,7 @@ const LeagueList = () => {
       <td style={{whiteSpace: 'nowrap'}}>{league.leagueName}</td>
       <td>{league.leagueNation}</td>
       <td>{league.leagueDivision}</td>
+      <td>{league.season}</td>
       <td>
         <ButtonGroup>
           <Button size="sm" color="primary" tag={Link} to={"/leagues/" + league.leagueId}>Edit</Button>
@@ -105,9 +106,10 @@ const LeagueList = () => {
         <Table className="mt-4">
           <thead>
           <tr>
-            <th width="40%">Name</th>
-            <th width="30%">Nation</th>
-            <th width="30%">Division</th>
+            <th width="30%">Name</th>
+            <th width="20%">Nation</th>
+            <th width="20%">Division</th>
+            <th width="30%">Season</th>
           </tr>
           </thead>
           <tbody>

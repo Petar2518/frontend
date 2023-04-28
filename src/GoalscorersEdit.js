@@ -8,6 +8,7 @@ const GoalscorersEdit = () => {
     game : 0,
     player: 0,
     goals: 0,
+    team: 0,
   };
   const [goalscorer, setGoalscorer] = useState(initialFormState);
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ const GoalscorersEdit = () => {
             <Input type="text" name="goals" id="goals" value={goalscorer.goals || ''}
                    onChange={handleChange} autoComplete="goals"/>  
           </FormGroup>
-          
+        
           <FormGroup>
             <Button color="primary" type="submit">Save</Button>{' '}
             <Button color="secondary" tag={Link} to="/goalscorers">Cancel</Button>

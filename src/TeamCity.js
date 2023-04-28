@@ -29,7 +29,7 @@ const TeamList = () => {
         'Content-Type': 'application/json'
       }
     }).then(() => {
-      let updatedTeams = [...teams].filter(i => i.teamName !== id);
+      let updatedTeams = [...teams].filter(i => i.teamId !== id);
       setTeams(updatedTeams);
     });
   }
@@ -39,14 +39,14 @@ const TeamList = () => {
   }
 
   const teamList = teams.map(team => {
-    return <tr key={team.teamName}>
+    return <tr key={team.teamId}>
       <td style={{whiteSpace: 'nowrap'}}>{team.teamName}</td>
       <td>{team.country}</td>
       <td>{team.city}</td>
       <td>
         <ButtonGroup>
-          <Button size="sm" color="primary" tag={Link} to={"/teams/" + team.teamName}>Edit</Button>
-          <Button size="sm" color="danger" onClick={() => remove(team.teamName)}>Delete</Button>
+          <Button size="sm" color="primary" tag={Link} to={"/teams/" + team.teamId}>Edit</Button>
+          <Button size="sm" color="danger" onClick={() => remove(team.teamId)}>Delete</Button>
         </ButtonGroup>
       </td>
     </tr>

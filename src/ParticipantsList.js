@@ -37,7 +37,7 @@ const ParticipantsList = () => {
         'Content-Type': 'application/json'
       }
     }).then(() => {
-      let updatedParticipants = [...participants].filter(i => i.league.leagueId !== league || i.team.teamName !== team);
+      let updatedParticipants = [...participants].filter(i => i.league.leagueId !== league || i.team.teamId !== team);
       setParticipants(updatedParticipants);
     });
   }
@@ -47,15 +47,15 @@ const ParticipantsList = () => {
   }
   
   const participantsList = participants.map(participant => {
-    const id = `${participant.league.leagueId}-${participant.team.teamName}`;
+    const id = `${participant.league.leagueId}-${participant.team.teamId}`;
     return <tr key={id}>
       <td>  {participant.team.teamName}</td>
       <td>  {participant.league.leagueName}</td>
       <td>  {participant.points}</td>
       <td>
         <ButtonGroup>
-          <Button size="sm" color="primary" tag={Link} to={"/participants/" + participant.league.leagueId + "/" +participant.team.teamName}>Edit</Button>
-          <Button size="sm" color="danger" onClick={() => remove(participant.league.leagueId,participant.team.teamName)}>Delete</Button>
+          <Button size="sm" color="primary" tag={Link} to={"/participants/" + participant.league.leagueId + "/" +participant.team.teamId}>Edit</Button>
+          <Button size="sm" color="danger" onClick={() => remove(participant.league.leagueId,participant.team.teamId)}>Delete</Button>
         </ButtonGroup>
       </td>
     </tr>

@@ -48,7 +48,7 @@ const GoalscorersList = () => {
       <td>  {goalscorer.game.awayTeamGoals}</td>
       <td>  {goalscorer.game.awayTeam.teamName}</td>
       <td>  {goalscorer.player.name}</td>
-      <td>  {goalscorer.player.team.teamName}</td>
+      <td>  {goalscorer.team.teamName}</td>
       <td>  {goalscorer.goals} goals</td>
       <td>
         <ButtonGroup>

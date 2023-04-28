@@ -36,7 +36,7 @@ const App = () => {
         <Route path='/players' exact={true} element={<PlayerList/>}/>
         <Route path='/players/:id' element={<PlayerEdit/>}/>
         <Route path='/teams' exact={true} element={<TeamList/>}/>
-        <Route path='/teams/:name' element={<TeamEdit/>}/>
+        <Route path='/teams/:id' element={<TeamEdit/>}/>
         <Route path='/games' exact={true} element={<GameList/>}/>
         <Route path='/games/:id' element={<GameEdit/>}/>
         <Route path='/leagues' exact={true} element={<LeagueList/>}/>

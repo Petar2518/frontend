@@ -31,7 +31,7 @@ const ParticipantsEdit = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    await fetch(`/participants/participant${team ? `/${participant.league.leagueId}/${participant.team.teamName}` : '/add'}`, {
+    await fetch(`/participants/participant${team ? `/${participant.league.leagueId}/${participant.team.teamId}` : '/add'}`, {
         
         
       method: (league!=='add') ? 'PUT' : 'POST',
@@ -41,7 +41,7 @@ const ParticipantsEdit = () => {
       },
       body: JSON.stringify(participant)
     });
-    console.log(`/participants/participant${team ? `/${participant.league.leagueId}/${participant.team.teamName}` : '/add'}`);
+    console.log(`/participants/participant${team ? `/${participant.league.leagueId}/${participant.team.teamId}` : '/add'}`);
     setParticipant(initialFormState);
     navigate('/participants');
   }
@@ -60,7 +60,7 @@ const ParticipantsEdit = () => {
           </FormGroup>
           <FormGroup>
             <Label for="team">Team</Label>
-            <Input type="text" name="team" id="team" value={participant.team.teamName }
+            <Input type="text" name="team" id="team" value={participant.team.teamId }
                    onChange={handleChange} autoComplete="team"/>
           </FormGroup>
           <FormGroup>

@@ -9,6 +9,7 @@ const GameEdit = () => {
     homeTeamGoals: 0,
     awayTeamGoals: 0,
     awayTeam: '',
+    league: ''
   };
   const [game, setGame] = useState(initialFormState);
   const navigate = useNavigate();
@@ -72,7 +73,11 @@ const GameEdit = () => {
             <Input type="text" name="awayTeam" id="awayTeam" value={game.awayTeam.teamName }
                    onChange={handleChange} autoComplete="awayTeam"/>
           </FormGroup>
-          
+          <FormGroup>
+            <Label for="league">League</Label>
+            <Input type="text" name="league" id="league" value={game.league.leagueId }
+                   onChange={handleChange} autoComplete="league"/>
+          </FormGroup>
           <FormGroup>
             <Button color="primary" type="submit">Save</Button>{' '}
             <Button color="secondary" tag={Link} to="/games">Cancel</Button>

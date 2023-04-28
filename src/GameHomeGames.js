@@ -45,6 +45,7 @@ const GameList = () => {
       <td>{game.homeTeamGoals}</td>
       <td>{game.awayTeamGoals}</td>
       <td>{awayTeam}</td>
+      <td>{game.league.leagueName}</td>
       <td>
         <ButtonGroup>
           <Button size="sm" color="primary" tag={Link} to={"/games/" + game.gameId}>Edit</Button>
@@ -65,10 +66,11 @@ const GameList = () => {
         <Table className="mt-4">
           <thead>
           <tr>
-            <th width="30%">Home Team</th>
-            <th width="20%">Home Team Goals</th>
-            <th width="20%">Away Team Goals</th>
-            <th width="30%">Away Team</th>
+          <th width="25%">Home Team</th>
+            <th width="5%">Home Team Goals</th>
+            <th width="5%">Away Team Goals</th>
+            <th width="25%">Away Team</th>
+            <th width="40%">League</th>
           </tr>
           </thead>
           <tbody>

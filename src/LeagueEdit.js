@@ -68,6 +68,11 @@ const LeagueEdit = () => {
                    onChange={handleChange} autoComplete="leagueDivision"/>  
           </FormGroup>
           <FormGroup>
+            <Label for="season">Season</Label>
+            <Input type="text" name="season" id="season" value={league.season }
+                   onChange={handleChange} autoComplete="season"/>  
+          </FormGroup>
+          <FormGroup>
             <Button color="primary" type="submit">Save</Button>{' '}
             <Button color="secondary" tag={Link} to="/leagues">Cancel</Button>
           </FormGroup>

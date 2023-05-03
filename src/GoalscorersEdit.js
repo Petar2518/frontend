@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from './AppNavbar';
+import myApi from './api/myApi'
+import AsyncSelect from 'react-select/async';
 
 const GoalscorersEdit = () => {
   const initialFormState = {
@@ -10,13 +12,25 @@ const GoalscorersEdit = () => {
     goals: 0,
     team: 0,
   };
+  
   const [goalscorer, setGoalscorer] = useState(initialFormState);
   const navigate = useNavigate();
   const { game, player } = useParams();
+  const [disabled, setDisabled] = useState(null)
 
-
+  const fetchGames = async () => {
+    const result = await myApi.get('/games');
+    const res = result.data;
+    return res;
+  }
+  const fetchPlayers = async () => {
+    const result = await myApi.get('/players');
+    const res = result.data;
+    return res;
+  }
   useEffect(() => {
     if (game !== 'add' && player !== 'add') {
+      setDisabled(true);
       fetch(`${player}`)
         .then(response => response.json())
         .then(data => setGoalscorer(data));
@@ -56,13 +70,35 @@ const GoalscorersEdit = () => {
         <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label for="game">Game</Label>
-            <Input type="text" name="game" id="game" value={goalscorer.game.gameId }
-                   onChange={handleChange} autoComplete="game"/>
+                   <AsyncSelect
+          isDisabled={disabled}
+          name="game"
+          id="game"
+          isSearchable={false}
+          cacheOptions
+          defaultOptions
+          value={goalscorer.game}
+          getOptionLabel={e => e.homeTeam.teamName + ' ' + e.homeTeamGoals + ' : ' + e.awayTeamGoals + ' ' + e.awayTeam.teamName  }
+          getOptionValue={e => e.gameId}
+          loadOptions={fetchGames}
+          onChange={team=>handleChange({target:{value: team, name:'game'}})}
+        />
           </FormGroup>
           <FormGroup>
             <Label for="player">Player</Label>
-            <Input type="text" name="player" id="player" value={goalscorer.player.playerId }
-                   onChange={handleChange} autoComplete="player"/>
+            <AsyncSelect
+          isDisabled={disabled}
+          name="player"
+          id="player"
+          isSearchable={false}
+          cacheOptions
+          defaultOptions
+          value={goalscorer.player}
+          getOptionLabel={e => e.name + ', team:' + e.team.teamName }
+          getOptionValue={e => e.playerId}
+          loadOptions={fetchPlayers}
+          onChange={player=>handleChange({target:{value: player, name:'player'}})}
+        />
           </FormGroup>
           <FormGroup>
             <Label for="goals">Goals</Label>

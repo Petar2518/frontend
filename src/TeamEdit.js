@@ -12,9 +12,10 @@ const TeamEdit = () => {
   const [team, setTeam] = useState(initialFormState);
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const [disabled, setDisabled] = useState(null)
   useEffect(() => {
     if (id !== 'add') {
+      setDisabled(true);
       fetch(`team/${id}`)
         .then(response => response.json())
         .then(data => setTeam(data));
@@ -53,7 +54,7 @@ const TeamEdit = () => {
         <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label for="teamName">Name</Label>
-            <Input type="text" name="teamName" id="teamName" value={team.teamName || ''}
+            <Input disabled={disabled} type="text" name="teamName" id="teamName" value={team.teamName || ''}
                    onChange={handleChange} autoComplete="teamName"/>
           </FormGroup>
           <FormGroup>

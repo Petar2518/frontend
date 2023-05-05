@@ -53,7 +53,7 @@ const ParticipantsEdit = () => {
       body: JSON.stringify(participant)
     });
     setParticipant(initialFormState);
-    navigate('/participants');
+    navigate('/leagueparticipants/' + league);
   }
 
   const title = <h2>{league!=='add' ? 'Edit participant' : 'Add participant'}</h2>;
@@ -103,7 +103,7 @@ const ParticipantsEdit = () => {
           
           <FormGroup>
             <Button color="primary" type="submit">Save</Button>{' '}
-            <Button color="secondary" tag={Link} to="/participants">Cancel</Button>
+            <Button color="secondary" tag={Link} to={"/leagueparticipants/" + league}>Cancel</Button>
           </FormGroup>
         </Form>
       </Container>

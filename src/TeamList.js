@@ -9,6 +9,16 @@ const TeamList = () => {
   const [loading, setLoading] = useState(false);
   var city;
   var country;
+  const[disabledCity,setDisabledCity]=useState(true);
+  const[disabledCountry,setDisabledCountry]=useState(true);
+  const handleDisabledCity = (event) =>{
+    event.preventDefault();
+    setDisabledCity(false);
+  }
+  const handleDisabledCountry = (event) =>{
+    event.preventDefault();
+    setDisabledCountry(false);
+  }
   function findByCity(){
     city = document.getElementById("city").value;
     window.location = "/teamsfromcity/"+ city;
@@ -41,7 +51,7 @@ const TeamList = () => {
       setTeams(updatedTeams);
     });
   }
-
+  
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -53,6 +63,9 @@ const TeamList = () => {
       <td>{team.city}</td>
       <td>
         <ButtonGroup>
+        <Button size="sm" color="secondary" tag={Link} to={"/"+team.teamId+"/players" }>View Players</Button>
+        <Button size="sm" color="primary" tag={Link} to={"/allgames/" + team.teamId}>View Games</Button>
+        <Button size="sm" color="secondary" tag={Link} to={"/teamcompetitions/" + team.teamId}>View Standings</Button>
           <Button size="sm" color="primary" tag={Link} to={"/teams/" + team.teamId}>Edit</Button>
           <Button size="sm" color="danger" onClick={() => remove(team.teamId)}>Delete</Button>
         </ButtonGroup>
@@ -75,13 +88,12 @@ const TeamList = () => {
               Find teams from CITY:
             </th>
             <th width ="30%">
-            <Label for="city">City</Label>
-            <Input type="text" width="2" name="city" id="city" value={city}  autoComplete="city"/>          
+            <Input type="text" width="2" onChange={handleDisabledCity} name="city" id="city" value={city}  autoComplete="city"/>          
             </th>
             <th width="10%">
             </th>
             <th width="15%">
-            <Button color="secondary" onClick={findByCity}>Find</Button>
+            <Button color="secondary" disabled={disabledCity} onClick={findByCity}>Find</Button>
           </th>
           
 
@@ -91,13 +103,12 @@ const TeamList = () => {
               Find teams from COUNTRY:
             </th>
             <th width ="30%">
-            <Label for="country">Country</Label>
-            <Input type="text" width="2" name="country" id="country" value={country}  autoComplete="country"/>          
+            <Input type="text" width="2" onChange={handleDisabledCountry} name="country" id="country" value={country}  autoComplete="country"/>          
             </th>
             <th width="10%">
             </th>
             <th width="15%">
-            <Button color="secondary" onClick={findByCountry}>Find</Button>
+            <Button color="secondary" disabled={disabledCountry} onClick={findByCountry}>Find</Button>
           </th>
           
 
@@ -107,9 +118,9 @@ const TeamList = () => {
         <Table className="mt-4">
           <thead>
           <tr>
-            <th width="40%">Name</th>
+            <th width="30%">Name</th>
             <th width="20%">Country</th>
-            <th width="40%">City</th>
+            <th width="20%">City</th>
           </tr>
           </thead>
           <tbody>

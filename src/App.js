@@ -28,6 +28,11 @@ import GoalscorersGame from './GoalscorersGame';
 import GoalscorersPlayer from './GoalscorersPlayer';
 import ParticipantsLeagues from './ParticipantsLeagues';
 import ParticipantsTeams from './ParticipantsTeams';
+import GameView from './GameView';
+import GameSaveGoalscorer from './GameSaveGoalscorer';
+import TeamSaveLeague from './TeamSaveLeague';
+import LeagueSaveTeam from './LeagueSaveTeam'
+import AddPlayerToTeam from './AddPlayerToTeam';
 const App = () => {
   return (
     <Router>
@@ -39,6 +44,7 @@ const App = () => {
         <Route path='/teams/:id' element={<TeamEdit/>}/>
         <Route path='/games' exact={true} element={<GameList/>}/>
         <Route path='/games/:id' element={<GameEdit/>}/>
+        <Route path='/game/goalscorer/add/:game' element={<GameSaveGoalscorer/>}/>
         <Route path='/leagues' exact={true} element={<LeagueList/>}/>
         <Route path='/leagues/:id' element={<LeagueEdit/>}/>
         <Route path='/goalscorers' exact={true} element={<GoalscorersList/>}/>
@@ -46,9 +52,12 @@ const App = () => {
         <Route path='/goalscorers/:game' element={<GoalscorersEdit/>}/>
         <Route path='/participants' exact={true} element={<ParticipantsList/>}/>
         <Route path='/participants/:league' element={<ParticipantsEdit/>}/>
+        <Route path='/competition/:team/add' element={<TeamSaveLeague/>}/>
+        <Route path='/league/:league/add' element={<LeagueSaveTeam/>}/>
         <Route path='/participants/:league/:team' element={<ParticipantsEdit/>}/>
         <Route path='/youngerthan/:age' element={<YoungerThan/>}/>
         <Route path='/olderthan/:age' element={<OlderThan/>}/>
+        <Route path='/team/:team/player/add' element={<AddPlayerToTeam/>}/>
         <Route path='/:team/players' element={<TeamPlayers/>}/>
         <Route path='/teamsfromcity/:city' element={<TeamCity/>}/>
         <Route path='/teamsfromcountry/:country' element={<TeamCountry/>}/>
@@ -57,6 +66,7 @@ const App = () => {
         <Route path='/homegames/:team' element={<GameHomeGames/>}/>
         <Route path='/awaygames/:team' element={<GameAwayGames/>}/>
         <Route path='/allgames/:team' element={<GameAllGames/>}/>
+        <Route path='/games/view/:game'  element={<GameView/>}/>
         <Route path='/gamegoalscorers/:game' element={<GoalscorersGame/>}/>
         <Route path='/playergoals/:player' element={<GoalscorersPlayer/>}/>
         <Route path='/teamcompetitions/:team' element={<ParticipantsTeams/>}/>

@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Container,  Table } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 import { Link, useParams } from 'react-router-dom';
 
-const PlayerList = () => {
+const TeamPlayers = () => {
 
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ const PlayerList = () => {
 
       .then(response => response.json())
       .then(data => {
-        setPlayers(data.filter(i=> i.team.teamName===team));
+        setPlayers(data.filter(i=> i.team.teamId==team));
         setLoading(false);
       })
   }, []);
@@ -36,12 +36,11 @@ const PlayerList = () => {
   if (loading) {
     return <p>Loading...</p>;
   }
-
+ let teamname = '';
   const playerList = players.map(player => {
-    const team = `${player.team.teamName || ''}`;
+    teamname = player.team.teamName;
     return <tr key={player.playerId}>
       <td style={{whiteSpace: 'nowrap'}}>{player.name}</td>
-      <td>{team}</td>
       <td>{player.position}</td>
       <td>{player.age}</td>
       <td>
@@ -58,17 +57,16 @@ const PlayerList = () => {
       <AppNavbar/>
       <Container fluid>
         <div className="float-end">
-          <Button color="success" tag={Link} to="/players/add">Add Player</Button>
+          <Button color="success" tag={Link} to={"/team/" + team + "/player/add"}>Add Player to Squad</Button>
         </div>
-        <h3>Players</h3>
+        <h3>{teamname}'s squad</h3>
         
         <Table className="mt-4">
           <thead>
           <tr>
-            <th width="20%">Name</th>
-            <th width="20%">Team</th>
-            <th>Position</th>
-            <th width="10%">Age</th>
+            <th width="40%">Name</th>
+            <th width= "35%">Position</th>
+            <th width="20%">Age</th>
           </tr>
           </thead>
           <tbody>
@@ -80,4 +78,4 @@ const PlayerList = () => {
   );
 };
 
-export default PlayerList;
+export default TeamPlayers;

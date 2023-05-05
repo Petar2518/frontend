@@ -5,7 +5,7 @@ import AppNavbar from './AppNavbar';
 import myApi from './api/myApi'
 import AsyncSelect from 'react-select/async';
 import Select from 'react-select';
-const PlayerEdit = () => {
+const AddPlayerToTeam = () => {
   const initialFormState = {
     name: '',
     position: '',
@@ -18,9 +18,10 @@ const PlayerEdit = () => {
     { value: 'midfielder', label: 'midfielder'},
     { value: 'forward', label: 'forward'},
   ]
+  const [teams,setTeams] = useState(null);
   const [player, setPlayer] = useState(initialFormState);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { team } = useParams();
   const [disabled, setDisabled] = useState(null)
 
   const fetchTeams = async () => {
@@ -29,14 +30,15 @@ const PlayerEdit = () => {
     return res;
   }
   useEffect(() => {
-    if (id !== 'add') {
-      setDisabled(true);
-      fetch(`player/${id}`)
+    if(team)
+    {
+        setDisabled(true);
+        fetch(`/teams/team/${team}`)
         .then(response => response.json())
-        .then(data => setPlayer(data));
+        .then(data => setTeams(data));
         
     }
-  }, [id, setPlayer],  options.label=player.position,);
+  }, [team, setTeams],player.team=teams,  options.label=player.position);
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -48,7 +50,7 @@ const PlayerEdit = () => {
     event.preventDefault();
     await fetch(`/players/player${player.playerId ? `/${player.playerId}` : '/add'}`, {
       
-      method: (player.playerId) ? 'PUT' : 'POST',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -56,10 +58,10 @@ const PlayerEdit = () => {
       body: JSON.stringify(player)
     });
     setPlayer(initialFormState);
-    navigate('/'+player.team.teamId+'/players');
+    navigate('/'+team+'/players');
   }
 
-  const title = <h2>{player.playerId ? 'Edit player' : 'Add player'}</h2>;
+  const title = <h2>{'Add player'}</h2>;
 
   return (<div>
       <AppNavbar/>
@@ -68,7 +70,7 @@ const PlayerEdit = () => {
         <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label for="name">Name</Label>
-            <Input disabled={disabled} type="text" name="name" id="name" value={player.name || ''}
+            <Input  type="text" name="name" id="name" value={player.name || ''}
                    onChange={handleChange} autoComplete="name"/>
           </FormGroup>
           <FormGroup>
@@ -88,6 +90,7 @@ const PlayerEdit = () => {
           <FormGroup>
             <Label for="team">Team</Label>
                    <AsyncSelect
+            isDisabled={disabled}
           name="team"
           id="team"
           isSearchable={false}
@@ -97,7 +100,7 @@ const PlayerEdit = () => {
           getOptionLabel={e => e.teamName + ', ' + e.city + ', ' + e.country }
           getOptionValue={e => e.teamId}
           loadOptions={fetchTeams}
-          onChange={team=>handleChange({target:{value: team, name:'team'}})}
+          onChange={t=>handleChange({target:{value: t, name:'team'}})}
         />
           </FormGroup>
           <FormGroup>
@@ -108,7 +111,7 @@ const PlayerEdit = () => {
           
           <FormGroup>
             <Button color="primary" type="submit">Save</Button>{' '}
-            <Button color="secondary" tag={Link} to={"/"+player.team.teamId+"/players"}>Cancel</Button>
+            <Button color="secondary" tag={Link} to={"/"+team+"/players"}>Cancel</Button>
           </FormGroup>
         </Form>
       </Container>
@@ -116,4 +119,4 @@ const PlayerEdit = () => {
   )
 };
 
-export default PlayerEdit;
+export default AddPlayerToTeam;

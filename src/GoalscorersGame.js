@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Container,  Table } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 import { Link, useParams } from 'react-router-dom';
 
-const GoalscorersList = () => {
+const GoalscorersGame = () => {
 
   const [goalscorers, setGoalscorers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -11,7 +11,6 @@ const GoalscorersList = () => {
 
   useEffect(() => {
     setLoading(true);
-    console.log(game);
     
     fetch('/goalscorers')
       .then(response => response.json())
@@ -39,7 +38,6 @@ const GoalscorersList = () => {
   }
   
   const goalscorersList = goalscorers.map(goalscorer => {
-    // const id = `${goalscorers.game.gameId + goalscorers.player.playerId}`;
     const id = `${goalscorer.game.gameId}-${goalscorer.player.playerId}`;
     
     return <tr key={id}>
@@ -67,7 +65,7 @@ const GoalscorersList = () => {
       
 
         <div className="float-end">
-          <Button color="success" tag={Link} to="/goalscorers/add">Add goalscorers</Button>
+          <Button color="success" tag={Link} to={"/game/goalscorer/add/" + game}>Add goalscorers</Button>
         </div>
         <h3>Goalscorers</h3>
         
@@ -94,4 +92,4 @@ const GoalscorersList = () => {
   );
 };
 
-export default GoalscorersList;
+export default GoalscorersGame;

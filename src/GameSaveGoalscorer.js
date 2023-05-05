@@ -5,37 +5,43 @@ import AppNavbar from './AppNavbar';
 import myApi from './api/myApi'
 import AsyncSelect from 'react-select/async';
 
-const GoalscorersEdit = () => {
+const GameSaveGoalscorer = () => {
   const initialFormState = {
     game : 0,
     player: 0,
     goals: 0,
     team: 0,
   };
+
+  const [games,setGames] = useState(null);
   
+
   const [goalscorer, setGoalscorer] = useState(initialFormState);
   const navigate = useNavigate();
   const { game, player } = useParams();
-  const [disabled, setDisabled] = useState(null)
+  const [disabled, setDisabled] = useState(null);
 
-  const fetchGames = async () => {
-    const result = await myApi.get('/games');
-    const res = result.data;
-    return res;
-  }
+  
   const fetchPlayers = async () => {
     const result = await myApi.get('/players');
     const res = result.data;
+    for(let i = 0; i<res.length;i++){
+      console.log(res[i].name);
+        if(!(res[i].team.teamName==goalscorer.game.homeTeam.teamName || res[i].team.teamName == goalscorer.game.awayTeam.teamName)){
+            res.splice(i,1);
+            i--;
+        }
+    }
     return res;
   }
   useEffect(() => {
-    if (game !== 'add' && player !== 'add') {
-      setDisabled(true);
-      fetch(`${player}`)
+    if (game){
+        setDisabled(true);
+        fetch(`/games/game/${game}`)
         .then(response => response.json())
-        .then(data => setGoalscorer(data));
+        .then(data => setGames(data));    
     }
-  }, [game,player, setGoalscorer]);
+  }, [game, setGames],goalscorer.game=games);
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -46,10 +52,8 @@ const GoalscorersEdit = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    await fetch(`/goalscorers/goalscorer${player ? `/${goalscorer.game.gameId}/${goalscorer.player.playerId}` : '/add'}`, {
-        
-        
-      method: (game!=='add') ? 'PUT' : 'POST',
+    await fetch(`/goalscorers/goalscorer${player ? `/${goalscorer.game.gameId}/${goalscorer.player.playerId}` : '/add'}`, {  
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -57,10 +61,10 @@ const GoalscorersEdit = () => {
       body: JSON.stringify(goalscorer)
     });
     setGoalscorer(initialFormState);
-    navigate('/gamegoalscorers/' + game);
+    navigate('/games/view/' + game);
   }
 
-  const title = <h2>{game!=='add' ? 'Edit goalscorer' : 'Add goalscorer'}</h2>;
+  const title = <h2>{'Add goalscorer'}</h2>;
 
   return (<div>
       <AppNavbar/>
@@ -79,14 +83,13 @@ const GoalscorersEdit = () => {
           value={goalscorer.game}
           getOptionLabel={e => e.homeTeam.teamName + ' ' + e.homeTeamGoals + ' : ' + e.awayTeamGoals + ' ' + e.awayTeam.teamName  }
           getOptionValue={e => e.gameId}
-          loadOptions={fetchGames}
           onChange={team=>handleChange({target:{value: team, name:'game'}})}
         />
           </FormGroup>
           <FormGroup>
             <Label for="player">Player</Label>
             <AsyncSelect
-          isDisabled={disabled}
+        
           name="player"
           id="player"
           isSearchable={false}
@@ -115,4 +118,4 @@ const GoalscorersEdit = () => {
   )
 };
 
-export default GoalscorersEdit;
+export default GameSaveGoalscorer;

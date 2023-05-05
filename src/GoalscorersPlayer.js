@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Container,  Table } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 import { Link, useParams } from 'react-router-dom';
 
-const GoalscorersList = () => {
+const GoalscorersPlayer = () => {
 
   const [goalscorers, setGoalscorers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -39,7 +39,6 @@ const GoalscorersList = () => {
   }
   
   const goalscorersList = goalscorers.map(goalscorer => {
-    // const id = `${goalscorers.game.gameId + goalscorers.player.playerId}`;
     const id = `${goalscorer.game.gameId}-${goalscorer.player.playerId}`;
     
     return <tr key={id}>
@@ -48,10 +47,10 @@ const GoalscorersList = () => {
       <td>  {goalscorer.game.awayTeamGoals}</td>
       <td>  {goalscorer.game.awayTeam.teamName}</td>
       <td>  {goalscorer.player.name}</td>
-      <td>  {goalscorer.team.teamName}</td>
       <td>  {goalscorer.goals} goals</td>
       <td>
         <ButtonGroup>
+          <Button size="sm" color="secondary" tag={Link} to={"/games/view/" + goalscorer.game.gameId}>View game</Button>
           <Button size="sm" color="primary" tag={Link} to={"/goalscorers/" + goalscorer.game.gameId + "/" +goalscorer.player.playerId}>Edit</Button>
           <Button size="sm" color="danger" onClick={() => remove(goalscorers.game.gameId,goalscorers.player.playerId)}>Delete</Button>
         </ButtonGroup>
@@ -81,7 +80,6 @@ const GoalscorersList = () => {
             <th width="5%">Away team goals</th>
             <th width="20%">Away team</th>
             <th width="20%">Player</th>
-            <th width="20%">Player's team</th>
             <th width="10%">Player scored:</th>
           </tr>
           </thead>
@@ -94,4 +92,4 @@ const GoalscorersList = () => {
   );
 };
 
-export default GoalscorersList;
+export default GoalscorersPlayer;

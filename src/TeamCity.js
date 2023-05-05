@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 import { Link, useParams } from 'react-router-dom';
 
-const TeamList = () => {
+const TeamCity = () => {
 
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ const TeamList = () => {
       .then(response => response.json())
       .then(data => {
 
-        setTeams(data.filter(i=>i.city===city));
+        setTeams(data.filter(i=>i.city.toLowerCase()===city.toLowerCase()));
         setLoading(false);
       })
   }, []);
@@ -77,4 +77,4 @@ const TeamList = () => {
   );
 };
 
-export default TeamList;
+export default TeamCity;

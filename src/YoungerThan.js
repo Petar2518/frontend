@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Container,  Table } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 import { Link, useParams } from 'react-router-dom';
 
-const PlayerList = () => {
+const YoungerThan = () => {
 
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -80,4 +80,4 @@ const PlayerList = () => {
   );
 };
 
-export default PlayerList;
+export default YoungerThan;

@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Container, Input, Label, Table } from 'reactstrap'
 import AppNavbar from './AppNavbar';
 import { Link, useParams } from 'react-router-dom';
 
-const LeagueList = () => {
+const LeagueNation = () => {
 
   const [leagues, setLeagues] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ const LeagueList = () => {
     fetch('/leagues')
       .then(response => response.json())
       .then(data => {
-        setLeagues(data.filter(i=> i.leagueNation===nation));
+        setLeagues(data.filter(i=> i.leagueNation.toLowerCase()===nation.toLowerCase()));
         setLoading(false);
       })
   }, []);
@@ -79,4 +79,4 @@ const LeagueList = () => {
   );
 };
 
-export default LeagueList;
+export default LeagueNation;

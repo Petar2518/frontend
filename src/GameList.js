@@ -1,24 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ButtonGroup, Container, Input, Label, Table } from 'reactstrap';
+import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 import { Link } from 'react-router-dom';
+import myApi from './api/myApi'
+import AsyncSelect from 'react-select/async';
 
 const GameList = () => {
 
   const [games, setGames] = useState([]);
+  const [game,setGame] = useState([]);
   const [loading, setLoading] = useState(false);
-  var team;
   function findHomeGames(){
-    team = document.getElementById("team").value;
-    window.location = "/homegames/"+ team;
+    window.location = "/homegames/"+ game.team.teamId;
   }
   function findAwayGames(){
-    team = document.getElementById("team").value;
-    window.location = "/awaygames/"+ team;
+    window.location = "/awaygames/"+ game.team.teamId;
   }
   function findAllGames(){
-    team = document.getElementById("team").value;
-    window.location = "/allgames/"+ team;
+    window.location = "/allgames/"+ game.team.teamId;
+  }
+  const fetchTeams = async () => {
+    const result = await myApi.get('/teams');
+    const res = result.data;
+    return res;
+  }
+  const handleChange = (event) => {
+    const { name, value } = event.target
+
+    setGame({ ...game, [name]: value })
   }
 
   useEffect(() => {
@@ -27,7 +36,8 @@ const GameList = () => {
     fetch('/games')
       .then(response => response.json())
       .then(data => {
-        setGames(data);
+        const sort = data.sort((a,b)=>b.gameId-a.gameId)
+        setGames(sort);
         setLoading(false);
       })
   }, []);
@@ -60,6 +70,7 @@ const GameList = () => {
       <td>{game.league.leagueName}</td>
       <td>
         <ButtonGroup>
+          <Button size="sm" color="secondary" tag={Link} to={"/games/view/" + game.gameId}>View Game</Button>
           <Button size="sm" color="primary" tag={Link} to={"/games/" + game.gameId}>Edit</Button>
           <Button size="sm" color="danger" onClick={() => remove(game.gameId)}>Delete</Button>
         </ButtonGroup>
@@ -82,23 +93,33 @@ const GameList = () => {
               Home/Away/All games for TEAM:
             </th>
             <th width ="30%">
-            <Label for="team">Team</Label>
-            <Input type="text" name="team" id="team" value={team}  autoComplete="team"/>          
+          <AsyncSelect
+          name="team"
+          id="team"
+          isSearchable={false}
+          cacheOptions
+          defaultOptions
+          value={game.team}
+          getOptionLabel={e => e.teamName + ', ' + e.city + ', ' + e.country }
+          getOptionValue={e => e.teamId}
+          loadOptions={fetchTeams}
+          onChange={team=>handleChange({target:{value: team, name:'team'}})}
+        />
+            </th>
+            <th width="7%">
             </th>
             <th width="10%">
-            </th>
-            <th width="15%">
-            <Button color="secondary" onClick={findHomeGames}>Home games</Button>
+            <Button color="secondary" disabled={!game.team} onClick={findHomeGames}>Home games</Button>
             </th>
             <th width="5%"> 
             </th>
-            <th width="15%">
-            <Button color="secondary" onClick={findAwayGames}>Away games</Button>
+            <th width="10%">
+            <Button color="secondary"  disabled={!game.team} onClick={findAwayGames}>Away games</Button>
             </th>
             <th width="5%"> 
             </th>
-            <th width="15%">
-            <Button color="secondary" onClick={findAllGames}>All games</Button>
+            <th width="10%">
+            <Button color="secondary" disabled={!game.team} onClick={findAllGames}>All games</Button>
             </th>
           </tr>
         </thead>
@@ -110,7 +131,7 @@ const GameList = () => {
             <th width="5%">Home Team Goals</th>
             <th width="5%">Away Team Goals</th>
             <th width="25%">Away Team</th>
-            <th width="40%">League</th>
+            <th width="27%">League</th>
           </tr>
           </thead>
           <tbody>

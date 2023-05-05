@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 import { Link, useParams } from 'react-router-dom';
 
-const ParticipantsList = () => {
+const ParticipantsTeams = () => {
 
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -14,7 +14,8 @@ const ParticipantsList = () => {
     fetch('/participants')
       .then(response => response.json())
       .then(data => {
-        setParticipants(data.filter(i=>i.team.teamName==team));
+        const sort = data.sort((a,b)=>b.points-a.points)
+        setParticipants(sort  .filter(i=>i.team.teamId==team));
         setLoading(false);
       })
   }, []);
@@ -27,7 +28,7 @@ const ParticipantsList = () => {
         'Content-Type': 'application/json'
       }
     }).then(() => {
-      let updatedParticipants = [...participants].filter(i => i.league.leagueId !== league || i.team.teamName !== team);
+      let updatedParticipants = [...participants].filter(i => i.league.leagueId !== league || i.team.teamId !== team);
       setParticipants(updatedParticipants);
     });
   }
@@ -44,8 +45,8 @@ const ParticipantsList = () => {
       <td>  {participant.points}</td>
       <td>
         <ButtonGroup>
-          <Button size="sm" color="primary" tag={Link} to={"/participants/" + participant.league.leagueId + "/" +participant.team.teamName}>Edit</Button>
-          <Button size="sm" color="danger" onClick={() => remove(participant.league.leagueId,participant.team.teamName)}>Delete</Button>
+          <Button size="sm" color="primary" tag={Link} to={"/participants/" + participant.league.leagueId + "/" +participant.team.teamId}>Edit</Button>
+          <Button size="sm" color="danger" onClick={() => remove(participant.league.leagueId,participant.team.teamId)}>Delete</Button>
         </ButtonGroup>
       </td>
     </tr>
@@ -56,7 +57,7 @@ const ParticipantsList = () => {
       <AppNavbar/>
       <Container fluid>
         <div className="float-end">
-          <Button color="success" tag={Link} to="/participants/add">Add participant</Button>
+          <Button color="success" tag={Link} to={"/competition/" +team + "/add/"}>Add competition</Button>
         </div>
         <h3>Participants</h3>
         <Table className="mt-4">
@@ -76,4 +77,4 @@ const ParticipantsList = () => {
   );
 };
 
-export default ParticipantsList;
+export default ParticipantsTeams;

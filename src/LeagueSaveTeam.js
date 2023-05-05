@@ -4,16 +4,19 @@ import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 import myApi from './api/myApi'
 import AsyncSelect from 'react-select/async';
-const ParticipantsEdit = () => {
+const LeagueSaveTeam = () => {
   const initialFormState = {
     league : 0,
     team: '',
     points: 0,
   };
+  const [leagues, setLeagues]= useState(null);
   const [participant, setParticipant] = useState(initialFormState);
   const navigate = useNavigate();
   const { league, team } = useParams();
   const [disabled, setDisabled] = useState(null)
+
+  
   const fetchLeagues = async () => {
     const result = await myApi.get('/leagues');
     const res = result.data;
@@ -22,16 +25,28 @@ const ParticipantsEdit = () => {
   const fetchTeams = async () => {
     const result = await myApi.get('/teams');
     const res = result.data;
+    const result2=await myApi.get('/participants');
+    const parti=result2.data;
+    for(let i=0;i<parti.length;i++){
+      if(parti[i].league.leagueId==league){
+        for(let j=0;j<res.length;j++){
+          if (parti[i].team.teamId==res[j].teamId){
+            res.splice(j,1);
+            j--;
+          }
+        }
+      }
+    }
     return res;
   }
   useEffect(() => {
-    if (league !== 'add' && team !== 'add') {
+    if (league) {
       setDisabled(true);
-      fetch(`${team}`)
+      fetch(`/leagues/league/${league}`)
         .then(response => response.json())
-        .then(data => setParticipant(data));
+        .then(data => setLeagues(data));
     }
-  }, [league,team, setParticipant]);
+  }, [league,setLeagues],participant.league=leagues);
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -45,7 +60,7 @@ const ParticipantsEdit = () => {
     await fetch(`/participants/participant${team ? `/${participant.league.leagueId}/${participant.team.teamId}` : '/add'}`, {
         
         
-      method: (league!=='add') ? 'PUT' : 'POST',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -53,10 +68,10 @@ const ParticipantsEdit = () => {
       body: JSON.stringify(participant)
     });
     setParticipant(initialFormState);
-    navigate('/participants');
+    navigate('/leagueparticipants/' + league);
   }
 
-  const title = <h2>{league!=='add' ? 'Edit participant' : 'Add participant'}</h2>;
+  const title = <h2>{'Add participant'}</h2>;
 
   return (<div>
       <AppNavbar/>
@@ -66,9 +81,9 @@ const ParticipantsEdit = () => {
           <FormGroup>
             <Label for="league">League</Label>
                     <AsyncSelect
-          isDisabled={disabled}
           name="league"
           id="league"
+          isDisabled={disabled}
           cacheOptions
           isSearchable={false}
           defaultOptions
@@ -84,7 +99,7 @@ const ParticipantsEdit = () => {
                     <AsyncSelect
           name="team"
           id="team"
-          isDisabled={disabled}
+          
           isSearchable={false}
           cacheOptions
           defaultOptions
@@ -103,7 +118,7 @@ const ParticipantsEdit = () => {
           
           <FormGroup>
             <Button color="primary" type="submit">Save</Button>{' '}
-            <Button color="secondary" tag={Link} to="/participants">Cancel</Button>
+            <Button color="secondary" tag={Link} to={"/teamcompetitions/" + team}>Cancel</Button>
           </FormGroup>
         </Form>
       </Container>
@@ -111,4 +126,4 @@ const ParticipantsEdit = () => {
   )
 };
 
-export default ParticipantsEdit;
+export default LeagueSaveTeam;

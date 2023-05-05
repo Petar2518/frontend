@@ -8,7 +8,7 @@ const LeagueEdit = () => {
     leagueName: '',
     leagueNation: '',
     leagueDivision: '',
-
+    season:'',
   };
   const [league, setLeague] = useState(initialFormState);
   const navigate = useNavigate();
@@ -40,7 +40,6 @@ const LeagueEdit = () => {
       },
       body: JSON.stringify(league)
     });
-    console.log(`/leagues/league${league.leagueId ? `/${league.leagueId}` : '/add'}`);
     setLeague(initialFormState);
     navigate('/leagues');
   }

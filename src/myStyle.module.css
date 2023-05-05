@@ -1,0 +1,35 @@
+.bigblue {
+    color: rgb(0, 0, 0);
+    padding: 40px;
+    font-family: Arial;
+    text-align: center;
+  }
+ .hometeam {
+    /* border: .2px solid black; */
+    padding: 10px;
+    width: 50%;
+    text-align: left;
+    border-style: hidden;
+    
+    background-color: cadetblue;
+  }
+  .title{
+    color: red;
+  }
+  .table{
+    padding-top: 50px;
+    padding-right: 30px;
+    padding-bottom: 50px;
+    padding-left: 80px;
+    font-size: large;
+  }
+  .awayteam {
+    /* border: .2px solid black; */
+    padding: 10px;
+    width: 20%;
+    text-align: right;
+    border-style: hidden;
+    
+    
+    background-color: rgb(216, 248, 174);
+  }

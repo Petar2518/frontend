@@ -7,6 +7,16 @@ const LeagueList = () => {
 
   const [leagues, setLeagues] = useState([]);
   const [loading, setLoading] = useState(false);
+  const[disabledNation,setDisabledNation]=useState(true);
+  const[disabledDivision,setDisabledDivision]=useState(true);
+  const handleDisabledNation = (event) =>{
+    event.preventDefault();
+    setDisabledNation(false);
+  }
+  const handleDisabledDivision = (event) =>{
+    event.preventDefault();
+    setDisabledDivision(false);
+  }
   var nation;
   var division;
   function findByCity(){
@@ -54,6 +64,7 @@ const LeagueList = () => {
       <td>{league.season}</td>
       <td>
         <ButtonGroup>
+          <Button size="sm" color="secondary" tag={Link} to={"/leagueparticipants/" + league.leagueId}>View Standings</Button>
           <Button size="sm" color="primary" tag={Link} to={"/leagues/" + league.leagueId}>Edit</Button>
           <Button size="sm" color="danger" onClick={() => remove(league.leagueId)}>Delete</Button>
         </ButtonGroup>
@@ -76,13 +87,12 @@ const LeagueList = () => {
               Find leagues for COUNTRY:
             </th>
             <th width ="30%">
-            <Label for="nation">Nation</Label>
-            <Input type="text" width="2" name="nation" id="nation" value={nation}  autoComplete="nation"/>          
+            <Input type="text" width="2" onChange={handleDisabledNation} name="nation" id="nation" value={nation}  autoComplete="nation"/>          
             </th>
             <th width="10%">
             </th>
             <th width="15%">
-            <Button color="secondary" onClick={findByCity}>Find</Button>
+            <Button color="secondary" disabled={disabledNation} onClick={findByCity}>Find</Button>
           </th>
           
 
@@ -92,13 +102,12 @@ const LeagueList = () => {
               Find leagues that are DIVISION:
             </th>
             <th width ="30%">
-            <Label for="division">Division</Label>
-            <Input type="text" width="2" name="division" id="division" value={division}  autoComplete="division"/>          
+            <Input type="text" width="2" onChange={handleDisabledDivision} name="division" id="division" value={division}  autoComplete="division"/>          
             </th>
             <th width="10%">
             </th>
             <th width="15%">
-            <Button color="secondary" onClick={findByCountry}>Find</Button>
+            <Button color="secondary" disabled={disabledDivision} onClick={findByCountry}>Find</Button>
           </th>
           </tr>
         </thead>
@@ -109,7 +118,7 @@ const LeagueList = () => {
             <th width="30%">Name</th>
             <th width="20%">Nation</th>
             <th width="20%">Division</th>
-            <th width="30%">Season</th>
+            <th width="15%">Season</th>
           </tr>
           </thead>
           <tbody>

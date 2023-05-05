@@ -39,8 +39,6 @@ const TeamEdit = () => {
       },
       body: JSON.stringify(team)
     });
-    console.log((id!=='add') ? 'PUT' : 'POST');
-    console.log(`/teams/team${team.teamId ? `/${team.teamId}` : '/add'}`);
     setTeam(initialFormState);
     navigate('/teams');
   }
@@ -58,12 +56,12 @@ const TeamEdit = () => {
                    onChange={handleChange} autoComplete="teamName"/>
           </FormGroup>
           <FormGroup>
-            <Label for="country">country</Label>
+            <Label for="country">Country</Label>
             <Input type="text" name="country" id="country" value={team.country || ''}
                    onChange={handleChange} autoComplete="country"/>
           </FormGroup>
           <FormGroup>
-            <Label for="city">city</Label>
+            <Label for="city">City</Label>
             <Input type="text" name="city" id="city" value={team.city }
                    onChange={handleChange} autoComplete="city"/>  
           </FormGroup>

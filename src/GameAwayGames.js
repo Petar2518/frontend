@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ButtonGroup, Container, Input, Label, Table } from 'reactstrap';
+import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 import { Link, useParams } from 'react-router-dom';
 
-const GameList = () => {
+const GameAwayGames = () => {
 
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ const GameList = () => {
     fetch('/games')
       .then(response => response.json())
       .then(data => {
-        setGames(data.filter(i=>i.awayTeam.teamName===team));
+        setGames(data.filter(i=>i.awayTeam.teamId==team));
         setLoading(false);
       })
   }, []);
@@ -48,6 +48,7 @@ const GameList = () => {
       <td>{game.league.leagueName}</td>
       <td>
         <ButtonGroup>
+        <Button size="sm" color="secondary" tag={Link} to={"/games/view/" + game.gameId}>View Game</Button>
           <Button size="sm" color="primary" tag={Link} to={"/games/" + game.gameId}>Edit</Button>
           <Button size="sm" color="danger" onClick={() => remove(game.gameId)}>Delete</Button>
         </ButtonGroup>
@@ -82,4 +83,4 @@ const GameList = () => {
   );
 };
 
-export default GameList;
+export default GameAwayGames;

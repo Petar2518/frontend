@@ -58,7 +58,7 @@ const GameEdit = () => {
       body: JSON.stringify(game)
     });
     setGame(initialFormState);
-    navigate('/games');
+    navigate('/games/');
   }
 
   const title = <h2>{game.gameId ? 'Edit game' : 'Add game'}</h2>;
@@ -133,7 +133,7 @@ const GameEdit = () => {
           </FormGroup>
           <FormGroup>
             <Button color="primary" type="submit">Save</Button>{' '}
-            <Button color="secondary" tag={Link} to="/games">Cancel</Button>
+            <Button color="secondary" tag={Link} to={`/games/${game.gameId ? `view/${game.gameId}` : ''}`}>Cancel</Button>
           </FormGroup>
         </Form>
       </Container>
